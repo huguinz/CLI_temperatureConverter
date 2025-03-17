@@ -6,7 +6,6 @@
  **********************************************************************************************/
 
 const temperatureConverter = (temperatureValue, originScale, destinationScale) => {
-	temperatureValue = parseFloat(temperatureValue)
 	let converterResult
 
 	if (originScale == 'Celsius') {
