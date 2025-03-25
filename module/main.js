@@ -7,31 +7,31 @@
 
 const temperatureConverter = (temperatureValue, originScale, destinationScale) => {
 	let converterResult
+	originScale = String(originScale).toUpperCase()
+	destinationScale = String(destinationScale).toUpperCase()
 
-	if (originScale == 'Celsius') {
-		if (destinationScale == 'Fahrenheit') {
+	if (originScale == 'CELSIUS') {
+		if (destinationScale == 'FAHRENHEIT') {
 			converterResult = (temperatureValue * 9) / 5 + 32
-		} else if (destinationScale == 'Kelvin') {
+		} else if (destinationScale == 'KELVIN') {
 			converterResult = temperatureValue + 273.15
 		}
-	} else if (originScale == 'Fahrenheit') {
-		if (destinationScale == 'Celsius') {
+	} else if (originScale == 'FAHRENHEIT') {
+		if (destinationScale == 'CELSIUS') {
 			converterResult = ((temperatureValue - 32) * 5) / 9
-		} else if (destinationScale == 'Kelvin') {
+		} else if (destinationScale == 'KELVIN') {
 			converterResult = ((temperatureValue - 32) * 5) / 9 + 273.15
 		}
-	} else if (originScale == 'Kelvin') {
-		if (destinationScale == 'Celsius') {
+	} else if (originScale == 'KELVIN') {
+		if (destinationScale == 'CELSIUS') {
 			converterResult = temperatureValue - 273.15
-		} else if (destinationScale == 'Fahrenheit') {
+		} else if (destinationScale == 'FAHRENHEIT') {
 			converterResult = ((temperatureValue - 273.15) * 9) / 5 + 32
 		}
 	}
 	return converterResult
 }
 
-console.log(temperatureConverter(350, 'Kelvin', 'Celsius'))
-
 module.exports = {
-	temperatureConverter,
+	temperatureConverter
 }

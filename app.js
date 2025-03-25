@@ -10,45 +10,38 @@ const readline = require('readline')
 
 const dataEntry = readline.createInterface({
 	input: process.stdin,
-	output: process.stdout,
+	output: process.stdout
 })
 
 dataEntry.question('Digite o valor da temperatura: ', (temperatureValue) => {
+	temperatureValue = parseFloat(temperatureValue.replace(',', '.'))
 	dataEntry.question('Digite a escala de origem(Celsius, Fahrenheit, Kelvin): ', (originScale) => {
-		originScale = String(originScale)
+		originScale = String(originScale).toUpperCase()
 		dataEntry.question('Digite a escala de destino(Celsius, Fahrenheit, Kelvin): ', (destinationScale) => {
-			destinationScale = String(destinationScale)
+			destinationScale = String(destinationScale).toUpperCase()
 			if (temperatureValue == '' || originScale == '' || destinationScale == '') {
 				console.log('ERRO: Todos os campos são obrigatórios')
 				dataEntry.close()
-			} else if (
-				temperatureValue == undefined ||
-				temperatureValue == NaN ||
-				temperatureValue != isNaN(temperatureValue)
-			) {
+			} else if (temperatureValue == undefined || temperatureValue != parseFloat(temperatureValue)) {
 				console.log('ERRO: Digite um valor numérico válido para a temperatura!')
 				dataEntry.close()
 			} else if (
-				(originScale != 'Celsius' && originScale != 'Fahrenheit' && originScale != 'Kelvin') ||
-				(destinationScale != 'Celsius' && destinationScale != 'Fahrenheit' && destinationScale != 'Kelvin')
+				(originScale != 'CELSIUS' && originScale != 'FAHRENHEIT' && originScale != 'KELVIN') ||
+				(destinationScale != 'CELSIUS' && destinationScale != 'FAHRENHEIT' && destinationScale != 'KELVIN')
 			) {
 				console.log('ERRO: Escolha uma escala válida (Celsius, Fahrenheit ou Kelvin)!')
 				dataEntry.close()
 			} else if (originScale == destinationScale) {
 				console.log('ERRO: A escala de origem e destino não podem ser iguais!')
 				dataEntry.close()
-			} else if (originScale == 'Kelvin') {
+			} else if (originScale == 'KELVIN') {
 				if (temperatureValue < 0) {
 					console.log('ERRO: Kelvin não pode ser menor que 0!')
 					dataEntry.close()
 				}
 			} else {
-				let converterResult = importTemperatureFunction.temperatureConverter(
-					temperatureValue,
-					originScale,
-					destinationScale
-				)
-				console.log(`${temperatureValue} graus ${originScale} equivalem a ${converterResult} ${destinationScale}!`)
+				let converterResult = importTemperatureFunction.temperatureConverter(temperatureValue, originScale, destinationScale)
+				console.log(`${temperatureValue} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`)
 				dataEntry.close()
 			}
 		})
