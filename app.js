@@ -19,7 +19,7 @@ dataEntry.question('Digite o valor da temperatura: ', (temperatureValue) => {
 		originScale = String(originScale).toUpperCase()
 		dataEntry.question('Digite a escala de destino(Celsius, Fahrenheit, Kelvin): ', (destinationScale) => {
 			destinationScale = String(destinationScale).toUpperCase()
-			if (temperatureValue == '' || originScale == '' || destinationScale == '') {
+			if (isNaN(temperatureValue) || originScale == '' || destinationScale == '') {
 				console.log('ERRO: Todos os campos são obrigatórios')
 				dataEntry.close()
 			} else if (temperatureValue == undefined || temperatureValue != parseFloat(temperatureValue)) {
