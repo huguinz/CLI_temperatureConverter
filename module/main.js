@@ -32,8 +32,6 @@ const temperatureConverter = (temperatureValue, originScale, destinationScale) =
 	return converterResult
 }
 
-console.log(temperatureConverter(10, 'celsius', 'kelvin'))
-
 module.exports = {
 	temperatureConverter
 }

@@ -22,28 +22,36 @@ dataEntry.question('Digite o valor da temperatura: ', (temperatureValue) => {
 			if (isNaN(temperatureValue) || originScale == '' || destinationScale == '') {
 				console.log('ERRO: Todos os campos são obrigatórios')
 				dataEntry.close()
+				process.exit(1)
 			} else if (temperatureValue == undefined || temperatureValue != parseFloat(temperatureValue)) {
 				console.log('ERRO: Digite um valor numérico válido para a temperatura!')
 				dataEntry.close()
+				process.exit(1)
 			} else if (
 				(originScale != 'CELSIUS' && originScale != 'FAHRENHEIT' && originScale != 'KELVIN') ||
 				(destinationScale != 'CELSIUS' && destinationScale != 'FAHRENHEIT' && destinationScale != 'KELVIN')
 			) {
 				console.log('ERRO: Escolha uma escala válida (Celsius, Fahrenheit ou Kelvin)!')
 				dataEntry.close()
+				process.exit(1)
 			} else if (originScale == destinationScale) {
 				console.log('ERRO: A escala de origem e destino não podem ser iguais!')
 				dataEntry.close()
-			} else if (originScale == 'KELVIN') {
-				if (temperatureValue < 0) {
-					console.log('ERRO: Kelvin não pode ser menor que 0!')
-					dataEntry.close()
-				}
-			} else {
-				let converterResult = importTemperatureFunction.temperatureConverter(temperatureValue, originScale, destinationScale)
-				console.log(`${temperatureValue} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`)
+				process.exit(1)
+			} else if (originScale == 'KELVIN' && temperatureValue < 0) {
+				console.log('ERRO: Kelvin não pode ser menor que 0!')
 				dataEntry.close()
+				process.exit(1)
+			} else {
+				return finalResult(temperatureValue, originScale, destinationScale)
 			}
 		})
 	})
 })
+
+const finalResult = (temperatureValue, originScale, destinationScale) => {
+	const converterResult = importTemperatureFunction.temperatureConverter(temperatureValue, originScale, destinationScale)
+	console.log(`${temperatureValue} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`)
+	dataEntry.close()
+	process.exit(0)
+}
