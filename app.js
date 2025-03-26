@@ -48,7 +48,6 @@ dataEntry.question('Digite o valor da temperatura: ', (temperatureValue) => {
 		})
 	})
 })
-
 const finalResult = (temperatureValue, originScale, destinationScale) => {
 	const converterResult = importTemperatureFunction.temperatureConverter(temperatureValue, originScale, destinationScale)
 	console.log(`${temperatureValue} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`)
