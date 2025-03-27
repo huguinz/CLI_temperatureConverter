@@ -101,6 +101,4 @@ const userImputs = () => {
 	}
 }
 
-const finalResult = (temperatureValue, originScale, destinationScale) => {}
-
 userImputs()
