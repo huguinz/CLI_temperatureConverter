@@ -13,44 +13,79 @@ const dataEntry = readline.createInterface({
 	output: process.stdout
 })
 
-dataEntry.question('Digite o valor da temperatura: ', (temperatureValue) => {
-	temperatureValue = parseFloat(temperatureValue.replace(',', '.'))
-	dataEntry.question('Digite a escala de origem(Celsius, Fahrenheit, Kelvin): ', (originScale) => {
-		originScale = String(originScale).toUpperCase()
-		dataEntry.question('Digite a escala de destino(Celsius, Fahrenheit, Kelvin): ', (destinationScale) => {
-			destinationScale = String(destinationScale).toUpperCase()
-			if (isNaN(temperatureValue) || originScale == '' || destinationScale == '') {
-				console.log('ERRO: Todos os campos são obrigatórios')
-				dataEntry.close()
-				process.exit(1)
-			} else if (temperatureValue == undefined || temperatureValue != parseFloat(temperatureValue)) {
-				console.log('ERRO: Digite um valor numérico válido para a temperatura!')
-				dataEntry.close()
-				process.exit(1)
-			} else if (
-				(originScale != 'CELSIUS' && originScale != 'FAHRENHEIT' && originScale != 'KELVIN') ||
-				(destinationScale != 'CELSIUS' && destinationScale != 'FAHRENHEIT' && destinationScale != 'KELVIN')
-			) {
-				console.log('ERRO: Escolha uma escala válida (Celsius, Fahrenheit ou Kelvin)!')
-				dataEntry.close()
-				process.exit(1)
-			} else if (originScale == destinationScale) {
-				console.log('ERRO: A escala de origem e destino não podem ser iguais!')
-				dataEntry.close()
-				process.exit(1)
-			} else if (originScale == 'KELVIN' && temperatureValue < 0) {
-				console.log('ERRO: Kelvin não pode ser menor que 0!')
-				dataEntry.close()
-				process.exit(1)
-			} else {
-				return finalResult(temperatureValue, originScale, destinationScale)
-			}
-		})
-	})
-})
+let resetProgram = 1
+
+const userImputs = () => {
+	while (resetProgram == 1) {
+		resetProgram = 2
+		console.log('--------------------------------- CONVERSOR DE TEMPERATURA ---------------------------------')
+
+		setTimeout(() => {
+			dataEntry.question('Digite o valor da temperatura: ', (temperatureValue) => {
+				temperatureValue = parseFloat(temperatureValue.replace(',', '.'))
+				dataEntry.question('Digite a escala de origem(Celsius, Fahrenheit, Kelvin): ', (originScale) => {
+					originScale = String(originScale).toUpperCase()
+					dataEntry.question('Digite a escala de destino(Celsius, Fahrenheit, Kelvin): ', (destinationScale) => {
+						destinationScale = String(destinationScale).toUpperCase()
+						if (isNaN(temperatureValue) || originScale == '' || destinationScale == '') {
+							console.log('ERRO: Todos os campos são obrigatórios')
+							dataEntry.close()
+							process.exit(1)
+						} else if (temperatureValue == undefined || temperatureValue != parseFloat(temperatureValue)) {
+							console.log('ERRO: Digite um valor numérico válido para a temperatura!')
+							dataEntry.close()
+							process.exit(1)
+						} else if (
+							(originScale != 'CELSIUS' && originScale != 'FAHRENHEIT' && originScale != 'KELVIN') ||
+							(destinationScale != 'CELSIUS' && destinationScale != 'FAHRENHEIT' && destinationScale != 'KELVIN')
+						) {
+							console.log('ERRO: Escolha uma escala válida (Celsius, Fahrenheit ou Kelvin)!')
+							dataEntry.close()
+							process.exit(1)
+						} else if (originScale == destinationScale) {
+							console.log('ERRO: A escala de origem e destino não podem ser iguais!')
+							dataEntry.close()
+							process.exit(1)
+						} else if (originScale == 'KELVIN' && temperatureValue < 0) {
+							console.log('ERRO: Kelvin não pode ser menor que 0!')
+							dataEntry.close()
+							process.exit(1)
+						} else {
+							finalResult(temperatureValue, originScale, destinationScale)
+
+							dataEntry.question('Deseja fazer outra conversão? (S/N): ', (resetOrCloseProgram) => {
+								if (resetOrCloseProgram == 's' || resetOrCloseProgram == 'S') {
+									setTimeout(() => {
+										resetProgram = 1
+										userImputs()
+									}, 1500)
+
+									console.log('Reiniciando programa...')
+								} else if (resetOrCloseProgram !== 'n' && resetOrCloseProgram !== 'N') {
+									console.log('ERRO: Opção inválida!')
+									dataEntry.close()
+									process.exit(1)
+								} else {
+									setTimeout(() => {
+										dataEntry.close()
+										process.exit(0)
+									}, 1500)
+									setTimeout(() => {
+										console.log('--------------------------------- FIM DO PROGRAMA ---------------------------------')
+									}, 800)
+								}
+							})
+						}
+					})
+				})
+			})
+		}, 1500)
+	}
+}
+
 const finalResult = (temperatureValue, originScale, destinationScale) => {
 	const converterResult = importTemperatureFunction.temperatureConverter(temperatureValue, originScale, destinationScale)
 	console.log(`${temperatureValue} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`)
-	dataEntry.close()
-	process.exit(0)
 }
+
+userImputs()
