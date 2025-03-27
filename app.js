@@ -53,28 +53,34 @@ const userImputs = () => {
 						} else {
 							finalResult(temperatureValue, originScale, destinationScale)
 
-							dataEntry.question('Deseja fazer outra conversão? (S/N): ', (resetOrCloseProgram) => {
-								if (resetOrCloseProgram == 's' || resetOrCloseProgram == 'S') {
-									setTimeout(() => {
-										resetProgram = 1
-										userImputs()
-									}, 1500)
+							const resetOrCloseProgram = () => {
+								while (resetProgram == 2) {
+									resetProgram = 3
+									dataEntry.question('Deseja fazer outra conversão? (S/N): ', (userResponse) => {
+										if (userResponse == 's' || userResponse == 'S') {
+											setTimeout(() => {
+												resetProgram = 1
+												return userImputs()
+											}, 1500)
 
-									console.log('Reiniciando programa...')
-								} else if (resetOrCloseProgram !== 'n' && resetOrCloseProgram !== 'N') {
-									console.log('ERRO: Opção inválida!')
-									dataEntry.close()
-									process.exit(1)
-								} else {
-									setTimeout(() => {
-										dataEntry.close()
-										process.exit(0)
-									}, 1500)
-									setTimeout(() => {
-										console.log('--------------------------------- FIM DO PROGRAMA ---------------------------------')
-									}, 800)
+											console.log('Reiniciando programa...')
+										} else if (userResponse !== 'n' && userResponse !== 'N') {
+											console.log('ERRO: Opção inválida!')
+											resetProgram = 2
+											return resetOrCloseProgram()
+										} else {
+											setTimeout(() => {
+												dataEntry.close()
+												process.exit(0)
+											}, 1500)
+											setTimeout(() => {
+												console.log('--------------------------------- FIM DO PROGRAMA ---------------------------------')
+											}, 800)
+										}
+									})
 								}
-							})
+							}
+							resetOrCloseProgram()
 						}
 					})
 				})
