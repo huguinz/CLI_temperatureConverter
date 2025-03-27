@@ -14,11 +14,12 @@ const dataEntry = readline.createInterface({
 })
 
 let resetProgram = 1
+let converterHistory = []
 
 const userImputs = () => {
 	while (resetProgram == 1) {
 		resetProgram = 2
-		console.log('--------------------------------- CONVERSOR DE TEMPERATURA ---------------------------------')
+		console.log('---------------------------- CONVERSOR DE TEMPERATURA -----------------------------')
 
 		setTimeout(() => {
 			dataEntry.question('Digite o valor da temperatura: ', (temperatureValue) => {
@@ -51,7 +52,12 @@ const userImputs = () => {
 							dataEntry.close()
 							process.exit(1)
 						} else {
-							finalResult(temperatureValue, originScale, destinationScale)
+							const converterResult = importTemperatureFunction.temperatureConverter(temperatureValue, originScale, destinationScale)
+							console.log(
+								`${temperatureValue.toFixed(2)} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`
+							)
+							console.log('Calculando...')
+							converterHistory.push(`${temperatureValue.toFixed(2)}° ${originScale} --> ${converterResult.toFixed(2)}° ${destinationScale}`)
 
 							const resetOrCloseProgram = () => {
 								while (resetProgram == 2) {
@@ -70,12 +76,18 @@ const userImputs = () => {
 											return resetOrCloseProgram()
 										} else {
 											setTimeout(() => {
+												console.log('---------------------------- HISTÓRICO DE CONVERSÕES -----------------------------')
+												console.log(converterHistory)
+											}, 600)
+
+											setTimeout(() => {
+												console.log('-------------------------------- FIM DO PROGRAMA ---------------------------------')
+											}, 1000)
+
+											setTimeout(() => {
 												dataEntry.close()
 												process.exit(0)
 											}, 1500)
-											setTimeout(() => {
-												console.log('--------------------------------- FIM DO PROGRAMA ---------------------------------')
-											}, 800)
 										}
 									})
 								}
@@ -89,9 +101,6 @@ const userImputs = () => {
 	}
 }
 
-const finalResult = (temperatureValue, originScale, destinationScale) => {
-	const converterResult = importTemperatureFunction.temperatureConverter(temperatureValue, originScale, destinationScale)
-	console.log(`${temperatureValue} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`)
-}
+const finalResult = (temperatureValue, originScale, destinationScale) => {}
 
 userImputs()
