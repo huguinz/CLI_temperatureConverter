@@ -28,12 +28,12 @@ const userImputs = () => {
 					originScale = String(originScale).toUpperCase()
 					dataEntry.question('Digite a escala de destino(Celsius, Fahrenheit, Kelvin): ', (destinationScale) => {
 						destinationScale = String(destinationScale).toUpperCase()
-						if (isNaN(temperatureValue) || originScale == '' || destinationScale == '') {
-							console.log('ERRO: Todos os campos são obrigatórios')
+						if (temperatureValue == undefined || temperatureValue != parseFloat(temperatureValue)) {
+							console.log('ERRO: Digite um valor numérico válido para a temperatura!')
 							dataEntry.close()
 							process.exit(1)
-						} else if (temperatureValue == undefined || temperatureValue != parseFloat(temperatureValue)) {
-							console.log('ERRO: Digite um valor numérico válido para a temperatura!')
+						} else if (isNaN(temperatureValue) || originScale == '' || destinationScale == '') {
+							console.log('ERRO: Todos os campos são obrigatórios')
 							dataEntry.close()
 							process.exit(1)
 						} else if (
@@ -56,7 +56,7 @@ const userImputs = () => {
 							console.log(
 								`${temperatureValue.toFixed(2)} graus ${originScale} equivalem a ${converterResult.toFixed(2)} ${destinationScale}!`
 							)
-							console.log('Calculando...')
+
 							converterHistory.push(`${temperatureValue.toFixed(2)}° ${originScale} --> ${converterResult.toFixed(2)}° ${destinationScale}`)
 
 							const resetOrCloseProgram = () => {
